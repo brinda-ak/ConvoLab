@@ -6,125 +6,97 @@ interface MessageBubbleProps {
   partnerName?: string;
 }
 
-/*
- * ── MESSAGE TEXT SIZE ────────────────────────────────────────────────────────
- * Change the text-* values in each bubble div below to resize message text.
- * Currently text-lg everywhere. Try text-xl to go bigger, text-base smaller.
- */
-const markdownClasses = `
-  [&_p]:my-2 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_p]:leading-relaxed
-  [&_strong]:font-semibold [&_em]:italic
-  [&_ul]:list-disc [&_ul]:ml-4 [&_ul]:my-2
-  [&_ol]:list-decimal [&_ol]:ml-4 [&_ol]:my-2
-  [&_li]:my-1
-  [&_code]:bg-black/10 dark:bg-white/10 [&_code]:px-1.5 [&_code]:rounded [&_code]:text-base
-`.trim();
-
-function isActionText(content: string): boolean {
-  const trimmed = content.trim();
-  return /^\*[^*\n]+\*$/.test(trimmed) || /^_[^_\n]+_$/.test(trimmed);
-}
-
-function extractActionText(content: string): string {
-  return content.trim().slice(1, -1);
-}
-
-function CharacterAvatar() {
-  return (
-    <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0
-                    bg-border-light/20 border border-border-light/20">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-           strokeWidth={1.5} stroke="currentColor"
-           className="w-5 h-5 text-text-secondary">
-        <path strokeLinecap="round" strokeLinejoin="round"
-          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-      </svg>
-    </div>
-  );
-}
-
-function CoachAvatar() {
-  return (
-    <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0
-                    bg-teal-medium/30 border border-teal-border">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-           stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
-           className="h-5 w-5 text-teal-strong">
-        <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
-        <path d="M9 18h6"/><path d="M10 22h4"/>
-      </svg>
-    </div>
-  );
-}
-
 export function MessageBubble({ message, partnerName }: MessageBubbleProps) {
-  const { role, content, isStreaming } = message;
+  const isUser = message.role === 'user';
+  const isPartner = message.role === 'partner';
+  const isCoach = message.role === 'coach';
 
-  // Stage direction – centered italic, no bubble (UNCHANGED)
-  if (role === 'partner' && isActionText(content)) {
+  // User message - right-aligned, gray
+  if (isUser) {
     return (
-      <div className="flex justify-center py-2 px-4">
-        <p className="text-base italic text-text-tertiary">
-          {extractActionText(content)}
-        </p>
-      </div>
-    );
-  }
-
-  // Partner – left aligned (UPDATED STYLING)
-  if (role === 'partner') {
-    return (
-      <div className="flex items-start gap-3 mb-4">
-        <CharacterAvatar />
-        <div className="max-w-[70%]">
-          <p className="text-sm text-text-secondary mb-1.5 font-medium">
-            {partnerName || 'Character'}
-          </p>
-          {/* UPDATED: Cleaner colors using new design system */}
-          <div className={`rounded-2xl px-5 py-3 text-lg leading-relaxed
-                          bg-card-bg border border-border-light/20 text-text-primary
-                          ${markdownClasses}`}>
-            <Markdown>{content}</Markdown>
-            {isStreaming && <span className="ml-1 animate-pulse opacity-60">▋</span>}
+      <div className="flex justify-end mb-4">
+        <div className="max-w-[75%] rounded-xl rounded-tr-sm px-5 py-3.5
+                        bg-[rgba(230,230,230,1)] dark:bg-[rgba(60,60,60,0.8)]
+                        text-[#1A1A1A] dark:text-[#EBEBEB]
+                        border border-[rgba(200,220,210,0.5)] dark:border-[rgba(255,255,255,0.05)]">
+          <div className="text-base leading-relaxed whitespace-pre-wrap">
+            {message.content}
           </div>
         </div>
       </div>
     );
   }
 
-  // Coach – inline (UPDATED: Bold teal left border!)
-  if (role === 'coach') {
+  // Partner message - left-aligned, with avatar, sage border (EXACT FIGMA)
+  if (isPartner) {
     return (
-      <div className="flex items-start gap-3 mb-4">
-        <CoachAvatar />
-        <div className="max-w-[70%]">
-          <p className="text-sm text-teal-strong dark:text-teal-strong mb-1.5 font-medium">
+      <div className="flex gap-3 mb-4">
+        {/* Partner Avatar */}
+        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-1
+                        bg-[rgba(200,200,200,1)] dark:bg-[rgba(60,60,60,1)]">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-[#6B6B6B] dark:text-[#858585]">
+            <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
+          </svg>
+        </div>
+
+        {/* Message Content */}
+        <div className="flex-1 max-w-[75%]">
+          <div className="text-xs font-medium mb-1
+                          text-[#4A4A4A] dark:text-[#A0A0A0]">
+            {partnerName || 'Partner'}
+          </div>
+          <div className="rounded-xl rounded-tl-sm px-5 py-3.5
+                          bg-[rgba(255,255,255,0.85)] dark:bg-[rgba(40,40,40,0.9)]
+                          border-l-4 border-[rgba(180,210,205,0.8)] dark:border-[rgba(212,232,229,0.4)]
+                          text-[#1A1A1A] dark:text-[#EBEBEB]">
+            <div className="text-base leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0">
+              <Markdown>{message.content}</Markdown>
+            </div>
+            {message.action && (
+              <div className="mt-3 pt-3 text-sm italic
+                              border-t border-[rgba(200,220,210,0.6)] dark:border-[rgba(255,255,255,0.1)]
+                              text-[#4A4A4A] dark:text-[#A0A0A0]">
+                {message.action}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Coach message - left-aligned, teal background + bold left border (EXACT FIGMA)
+  if (isCoach) {
+    return (
+      <div className="flex gap-3 mb-4">
+        {/* Coach Avatar - Lightbulb */}
+        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-1
+                        bg-[rgba(134,199,194,0.5)] dark:bg-[rgba(134,199,194,0.25)]">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-5 h-5 text-[rgba(50,130,120,1)] dark:text-[rgba(134,199,194,0.9)]">
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+            <path d="M9 18h6" />
+            <path d="M10 22h4" />
+          </svg>
+        </div>
+
+        {/* Message Content */}
+        <div className="flex-1 max-w-[75%]">
+          <div className="text-xs font-semibold mb-1
+                          text-[rgba(50,130,120,1)] dark:text-[rgba(134,199,194,0.8)]">
             Coach
-          </p>
-          {/* UPDATED: Teal background + BOLD LEFT BORDER (new design!) */}
-          <div className={`rounded-2xl px-5 py-3 text-lg leading-relaxed
-                          bg-teal-light/20 border-l-4 border-teal-border text-text-primary font-medium
-                          ${markdownClasses}`}>
-            <Markdown>{content}</Markdown>
-            {isStreaming && <span className="ml-1 animate-pulse opacity-60">▋</span>}
+          </div>
+          <div className="rounded-xl rounded-tl-sm px-5 py-3.5
+                          bg-[rgba(134,199,194,0.3)] dark:bg-[rgba(134,199,194,0.1)]
+                          border-l-4 border-[rgba(100,180,175,0.8)] dark:border-[rgba(134,199,194,0.5)]
+                          text-[#1A1A1A] dark:text-[#D4D4D4]">
+            <div className="text-base leading-relaxed [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:font-semibold [&_strong]:text-[#1A1A1A] dark:[&_strong]:text-[#EBEBEB]">
+              <Markdown>{message.content}</Markdown>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
-  // User – right aligned (UPDATED STYLING)
-  return (
-    <div className="flex justify-end mb-4">
-      <div className="max-w-[70%]">
-        <p className="text-sm text-text-tertiary mb-1.5 text-right font-medium">You</p>
-        {/* UPDATED: Cleaner gray colors */}
-        <div className={`rounded-2xl px-5 py-3 text-lg leading-relaxed
-                        bg-card-bg text-text-primary
-                        ${markdownClasses}`}>
-          <Markdown>{content}</Markdown>
-        </div>
-      </div>
-    </div>
-  );
+  return null;
 }

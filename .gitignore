@@ -41,3 +41,7 @@ coverage/
 
 # Task
 .task/
+
+redesign-incremental-backup/
+backup-before-redesing/
+
