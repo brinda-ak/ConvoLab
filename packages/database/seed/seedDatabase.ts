@@ -41,7 +41,7 @@ const SCENARIOS = [
     slug: 'angry-uncle-thanksgiving',
     partnerModel: 'google:gemini-2.0-flash',
     partnerUseWebSearch: true,
-    coachUseWebSearch: true,
+    coachUseWebSearch: false,
     description:
       'Practice navigating political disagreements with a family member during a holiday dinner.',
     partnerPersona: 'Your uncle who has strong political opinions',
@@ -70,14 +70,14 @@ Start the conversation with a provocative political statement about current even
 
 Throughout, remind the user to maintain a calm, curious, and respectful tone. The goal is understanding, not winning.
 
-Be concise and actionable. Focus on what to do next, not lengthy explanations.`,
+Keep your response to 2-3 sentences maximum. Be direct and actionable — one clear suggestion for what to say or do next. No bullet points, no lengthy explanations, no structured breakdowns.`,
   },
   {
     name: 'Difficult Coworker Feedback',
     slug: 'difficult-coworker',
     partnerModel: 'google:gemini-2.0-flash',
     partnerUseWebSearch: true,
-    coachUseWebSearch: true,
+    coachUseWebSearch: false,
     description:
       'Practice giving constructive feedback to a defensive coworker about missed deadlines.',
     partnerPersona: 'A coworker who becomes defensive when receiving feedback',
