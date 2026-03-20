@@ -153,6 +153,7 @@ function ConversationContent({ sessionId }: { sessionId: number }) {
   };
 
   const mainMessages = messages.filter(m => m.role !== 'coach');
+  const coachMessages = messages.filter(m => m.role === 'coach');
   const shortName = getShortName(scenario);
   
   const isInputDisabled = 
@@ -345,7 +346,10 @@ function ConversationContent({ sessionId }: { sessionId: number }) {
         <div className="hidden lg:block lg:w-[400px] xl:w-[450px] p-4 overflow-hidden
                         bg-[#F8F8F8] dark:bg-[#1A1A1A]
                         border-l border-[rgba(200,220,210,0.5)] dark:border-[rgba(255,255,255,0.07)]">
-          <DesktopCoachPanel messages={asideMessages} />
+          <DesktopCoachPanel 
+            coachMessages={coachMessages}
+            asideMessages={asideMessages} 
+          />
         </div>
       </div>
     </div>

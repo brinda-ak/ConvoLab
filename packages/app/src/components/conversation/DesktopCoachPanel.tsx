@@ -1,9 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
 import Markdown from 'react-markdown';
-import type { AsideMessage } from '../../hooks/useConversationSocket';
+import type { AsideMessage, Message } from '../../hooks/useConversationSocket';
 
 interface DesktopCoachPanelProps {
-    messages: AsideMessage[];
+    coachMessages: Message[];  // Automatic coach insights
+    asideMessages: AsideMessage[];  // User questions to coach
 }
 
 // Determine insight type based on content
@@ -30,8 +31,26 @@ function getInsightType(content: string): 'positive' | 'warning' | 'observation'
   return 'observation';
 }
 
-export function DesktopCoachPanel({ messages }: DesktopCoachPanelProps) {
+export function DesktopCoachPanel({ coachMessages, asideMessages }: DesktopCoachPanelProps) {
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    // Combine automatic insights and aside thread
+    // Keep them separate to maintain correct ordering
+    const allMessages = useMemo(() => {
+        // Automatic insights first (sorted by ID)
+        const autoInsights = [...coachMessages].sort((a, b) => {
+            const idA = a.id === -1 ? Number.MAX_SAFE_INTEGER : a.id;
+            const idB = b.id === -1 ? Number.MAX_SAFE_INTEGER : b.id;
+            return idA - idB;
+        });
+        
+        // Aside messages maintain their original order (already correct)
+        // User question followed by coach response, etc.
+        return [
+            ...autoInsights.map(m => ({ ...m, source: 'auto' as const })),
+            ...asideMessages.map(m => ({ ...m, source: 'aside' as const }))
+        ];
+    }, [coachMessages, asideMessages]);
 
     // Auto-scroll to bottom when messages change
     // biome-ignore lint/correctness/useExhaustiveDependencies: need to scroll on messages change
@@ -39,7 +58,7 @@ export function DesktopCoachPanel({ messages }: DesktopCoachPanelProps) {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
-    }, [messages]);
+    }, [allMessages]);
 
     return (
         <div className="flex flex-col h-full rounded-2xl shadow-xl overflow-hidden border
@@ -68,9 +87,9 @@ export function DesktopCoachPanel({ messages }: DesktopCoachPanelProps) {
                 </div>
             </div>
 
-            {/* Insights list - SHOW BOTH USER QUESTIONS AND COACH RESPONSES */}
+            {/* Insights list - SHOW BOTH AUTOMATIC AND USER QUESTIONS */}
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
-                {messages.length === 0 ? (
+                {allMessages.length === 0 ? (
                     <div className="text-center py-12 text-[#4A4A4A] dark:text-[#858585]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" 
                              stroke="currentColor" strokeWidth="2" 
@@ -82,11 +101,11 @@ export function DesktopCoachPanel({ messages }: DesktopCoachPanelProps) {
                         <p>Coach insights will appear here as the conversation progresses.</p>
                     </div>
                 ) : (
-                    messages.map((msg) => (
+                    allMessages.map((msg) => (
                         msg.role === 'user' ? (
-                            <UserQuestionCard key={msg.id} message={msg} />
+                            <UserQuestionCard key={`${msg.source}-${msg.id}`} message={msg} />
                         ) : (
-                            <InsightCard key={msg.id} message={msg} />
+                            <InsightCard key={`${msg.source}-${msg.id}`} message={msg} />
                         )
                     ))
                 )}
@@ -96,7 +115,7 @@ export function DesktopCoachPanel({ messages }: DesktopCoachPanelProps) {
 }
 
 // User's question to the coach
-function UserQuestionCard({ message }: { message: AsideMessage }) {
+function UserQuestionCard({ message }: { message: Message | AsideMessage }) {
     return (
         <div className="flex justify-end">
             <div className="max-w-[90%] rounded-xl rounded-tr-sm px-4 py-3 text-sm
@@ -110,7 +129,7 @@ function UserQuestionCard({ message }: { message: AsideMessage }) {
 }
 
 // Coach's insight response - EXACT FIGMA COLORS
-function InsightCard({ message }: { message: AsideMessage }) {
+function InsightCard({ message }: { message: Message | AsideMessage }) {
     const type = getInsightType(message.content);
     
     // EXACT colors from Figma design system
