@@ -70,7 +70,9 @@ Start the conversation with a provocative political statement about current even
 
 Throughout, remind the user to maintain a calm, curious, and respectful tone. The goal is understanding, not winning.
 
-Keep your response to 2-3 sentences maximum. Be direct and actionable — one clear suggestion for what to say or do next. No bullet points, no lengthy explanations, no structured breakdowns.`,
+Keep your response to 2-3 sentences maximum. Be direct and actionable — one clear suggestion for what to say or do next. No bullet points, no lengthy explanations, no structured breakdowns.
+
+CRITICAL: You are the coach, not a participant. Never speak in the uncle's voice, continue his argument, or editorialize about the situation. Start your response immediately with a coaching observation or suggestion — nothing else.`,
   },
   {
     name: 'Difficult Coworker Feedback',
