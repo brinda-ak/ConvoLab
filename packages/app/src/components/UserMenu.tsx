@@ -56,8 +56,20 @@ export function UserMenu() {
             referrerPolicy="no-referrer"
           />
         ) : (
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[18px] h-[18px]">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-[18px] h-[18px]"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+            />
           </svg>
         )}
       </button>
@@ -71,10 +83,12 @@ export function UserMenu() {
             onKeyDown={(e) => e.key === 'Escape' && setIsOpen(false)}
             role="presentation"
           />
-          <div className="absolute right-0 z-20 mt-2 w-72 rounded-xl
+          <div
+            className="absolute right-0 z-20 mt-2 w-72 rounded-xl
                           bg-white dark:bg-[rgba(40,40,40,0.98)]
                           border border-[rgba(130,167,161,0.2)] dark:border-[rgba(212,232,229,0.12)]
-                          shadow-xl backdrop-blur-sm">
+                          shadow-xl backdrop-blur-sm"
+          >
             <div className="p-4">
               {mergedFrom && (
                 <div className="mb-3 rounded-lg bg-[rgba(130,167,161,0.15)] dark:bg-[rgba(212,232,229,0.08)] p-2 text-sm text-[rgba(60,120,110,1)] dark:text-[rgba(134,199,194,0.9)]">
@@ -89,7 +103,9 @@ export function UserMenu() {
                   {isGuest ? (
                     <>
                       <div className="border-b border-[rgba(130,167,161,0.2)] dark:border-[rgba(212,232,229,0.1)] pb-3">
-                        <p className="font-medium text-gray-900 dark:text-[#EBEBEB]">Guest Session</p>
+                        <p className="font-medium text-gray-900 dark:text-[#EBEBEB]">
+                          Guest Session
+                        </p>
                         <p className="mt-1 text-sm text-gray-500 dark:text-[#A0A0A0]">
                           Sign in to save your conversations
                         </p>
@@ -124,7 +140,9 @@ export function UserMenu() {
                           />
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="truncate font-medium text-gray-900 dark:text-[#EBEBEB]">{user.name}</p>
+                          <p className="truncate font-medium text-gray-900 dark:text-[#EBEBEB]">
+                            {user.name}
+                          </p>
                           <p className="truncate text-sm text-gray-500 dark:text-[#A0A0A0]">
                             {user.externalIdentities?.[0]?.email}
                           </p>
@@ -139,7 +157,9 @@ export function UserMenu() {
                                    transition-colors"
                       >
                         <div className="font-medium text-gray-900 dark:text-[#EBEBEB]">Home</div>
-                        <div className="text-xs text-gray-500 dark:text-[#A0A0A0]">conversations</div>
+                        <div className="text-xs text-gray-500 dark:text-[#A0A0A0]">
+                          conversations
+                        </div>
                       </Link>
 
                       {(user.role === 'ADMIN' || user.role === 'STAFF') && (
@@ -150,8 +170,12 @@ export function UserMenu() {
                                      p-3 hover:bg-[rgba(130,167,161,0.08)] dark:hover:bg-[rgba(212,232,229,0.05)]
                                      transition-colors"
                         >
-                          <div className="font-medium text-gray-900 dark:text-[#EBEBEB]">Research</div>
-                          <div className="text-xs text-gray-500 dark:text-[#A0A0A0]">invitations, sessions</div>
+                          <div className="font-medium text-gray-900 dark:text-[#EBEBEB]">
+                            Research
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-[#A0A0A0]">
+                            invitations, sessions
+                          </div>
                         </Link>
                       )}
 
@@ -164,7 +188,9 @@ export function UserMenu() {
                                      transition-colors"
                         >
                           <div className="font-medium text-gray-900 dark:text-[#EBEBEB]">Admin</div>
-                          <div className="text-xs text-gray-500 dark:text-[#A0A0A0]">users, telemetry</div>
+                          <div className="text-xs text-gray-500 dark:text-[#A0A0A0]">
+                            users, telemetry
+                          </div>
                         </Link>
                       )}
 
@@ -211,13 +237,17 @@ export function UserMenu() {
             onKeyDown={(e) => e.key === 'Escape' && setShowLogoutConfirm(false)}
             role="presentation"
           />
-          <div className="fixed left-1/2 top-1/2 z-40 w-80 -translate-x-1/2 -translate-y-1/2
+          <div
+            className="fixed left-1/2 top-1/2 z-40 w-80 -translate-x-1/2 -translate-y-1/2
                           rounded-2xl p-6 shadow-2xl
                           bg-white dark:bg-[rgba(40,40,40,0.98)]
-                          border border-[rgba(130,167,161,0.2)] dark:border-[rgba(212,232,229,0.12)]">
+                          border border-[rgba(130,167,161,0.2)] dark:border-[rgba(212,232,229,0.12)]"
+          >
             {hasUsage ? (
               <>
-                <h3 className="font-semibold text-gray-900 dark:text-[#EBEBEB]">You have conversations</h3>
+                <h3 className="font-semibold text-gray-900 dark:text-[#EBEBEB]">
+                  You have conversations
+                </h3>
                 <p className="mt-2 text-sm text-gray-600 dark:text-[#A0A0A0]">
                   Signing out will lose your conversation history. Sign in with Google to keep it.
                 </p>
