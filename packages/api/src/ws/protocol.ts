@@ -14,6 +14,7 @@ export type ServerMessage =
   | { type: 'partner:delta'; content: string }
   | { type: 'partner:retry' }
   | { type: 'partner:done'; messageId: number; usage: TokenUsage; content: string }
+  | { type: 'exchange:complete' }
   | { type: 'coach:delta'; content: string }
   | { type: 'coach:done'; messageId: number; usage: TokenUsage; content: string }
   | { type: 'aside:delta'; threadId: string; content: string }

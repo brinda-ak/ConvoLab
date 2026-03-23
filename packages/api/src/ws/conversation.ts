@@ -150,6 +150,7 @@ export class ConversationManager {
       const isFirstExchange = this.session.messages.filter((m) => m.role === 'user').length === 1;
 
       if (isFirstExchange) {
+        send(this.ws, { type: 'exchange:complete' });
         await this.logUsage(partnerResult.usage, null);
         await this.checkQuotaWarning();
         await this.prisma.conversationSession.update({
