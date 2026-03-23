@@ -16,6 +16,7 @@ export interface Message {
   isStreaming?: boolean;
   messageType?: 'main' | 'aside';
   asideThreadId?: string;
+  action?: string;
 }
 
 export interface AsideMessage {
