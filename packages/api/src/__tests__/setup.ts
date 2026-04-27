@@ -19,6 +19,7 @@ export const testPrisma = createPrismaClient({
  */
 async function cleanDatabase(prisma: PrismaClient) {
   // Delete in order that respects foreign keys
+  await prisma.participantConfig.deleteMany();
   await prisma.observationNote.deleteMany();
   await prisma.message.deleteMany();
   await prisma.conversationSession.deleteMany();
