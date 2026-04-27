@@ -265,3 +265,14 @@ model TelemetryEvent {
   @@index([userId])
   @@index([name, createdAt])
 }
+
+// Store participant-specific config derived from external survey inputs
+model ParticipantConfig {
+  id          String   @id @default(cuid())
+  externalId  String   @unique
+  personaLean String
+  metadata    Json?    @default("{}")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

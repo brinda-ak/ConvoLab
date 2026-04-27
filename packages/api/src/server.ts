@@ -15,6 +15,7 @@ import {
 import oauthPlugin from './plugins/oauth.js';
 import sessionPlugin from './plugins/session.js';
 import authRoutes from './routes/auth.js';
+import qualtricsRoutes from './routes/qualtrics.js';
 import { createContext } from './trpc/context.js';
 import { type AppRouter, appRouter } from './trpc/router.js';
 import { registerWebSocketHandler } from './ws/handler.js';
@@ -44,6 +45,8 @@ await fastify.register(websocket);
 await registerWebSocketHandler(fastify);
 
 // Session and OAuth (must be registered before routes that need auth)
+await fastify.register(qualtricsRoutes);
+
 if (process.env.SESSION_KEY) {
   await fastify.register(sessionPlugin);
   await fastify.register(oauthPlugin);
