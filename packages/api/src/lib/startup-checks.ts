@@ -40,7 +40,7 @@ export function runStartupChecks(): DiagnosticResult {
   const errors: string[] = [];
   const warnings: string[] = [];
   const isDev = process.env.NODE_ENV !== 'production';
-  const envFileMissing = detectMissingEnvFile();
+  const envFileMissing = isDev && detectMissingEnvFile();
 
   // Check for missing .env file
   if (envFileMissing) {
